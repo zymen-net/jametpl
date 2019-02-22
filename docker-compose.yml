@@ -1,0 +1,20 @@
+version: "3"
+
+networks:
+  treafiktests_proxy:
+    external:
+      name: treafiktests_proxy
+
+services:
+  jametpl_static:
+    build: .
+    image: registry.gitlab.com/zymen/jametpl:latest
+    labels:
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:jamet.pl
+      - traefik.docker.network=treafiktests_proxy
+    expose:
+      - 80
+    networks:
+      - default
+      - treafiktests_proxy

@@ -1,0 +1,31 @@
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay
+  PROJECT_NAME: jametpl
+
+stages:
+  - build_docker
+  - deploy
+
+build_docker:
+  image: docker:stable
+  stage: build_docker
+  script:
+  - docker login -u zymen -p $REGISTRY_TOKEN registry.gitlab.com
+  - docker build -t $PROJECT_NAME .
+  - docker tag $PROJECT_NAME registry.gitlab.com/zymen/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+  - docker push registry.gitlab.com/zymen/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+  - docker tag $PROJECT_NAME registry.gitlab.com/zymen/$PROJECT_NAME:latest
+  - docker push registry.gitlab.com/zymen/$PROJECT_NAME:latest
+  
+deploy:
+  stage: deploy
+  script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SERVER_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@157.230.28.74 "cd projects/$PROJECT_NAME && pwd && git reset --hard HEAD && git pull --rebase && docker login registry.gitlab.com && docker-compose pull && docker-compose up -d"
