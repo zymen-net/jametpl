@@ -13,8 +13,8 @@ services:
       - traefik.enable=true
       - traefik.frontend.rule=Host:jamet.pl
       - traefik.docker.network=treafiktests_proxy
-    ports:
-      - 80:80
+    expose:
+      - 80
 #    volumes:
 #      - ./config/nginx.conf:/etc/nginx/nginx.conf
     networks:
