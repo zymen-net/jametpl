@@ -12,6 +12,9 @@ stages:
 build_docker:
   image: docker:stable
   stage: build_docker
+  only:
+    refs:
+      - master
   script:
   - docker login -u zymen -p $REGISTRY_TOKEN registry.gitlab.com
   - docker build -t $PROJECT_NAME .
@@ -22,6 +25,9 @@ build_docker:
   
 deploy:
   stage: deploy
+  only:
+    refs:
+      - master
   script:
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
   - eval $(ssh-agent -s)
