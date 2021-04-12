@@ -11,12 +11,10 @@ services:
     image: registry.gitlab.com/zymen/jametpl:latest
     labels:
       - traefik.enable=true
-      - traefik.frontend.rule=Host:jamet.pl,www.jamet.pl
+      - traefik.http.routers.my-container.rule=Host(`jamet.pl`)
       - traefik.docker.network=treafiktests_proxy
     expose:
       - 80
-#    volumes:
-#      - ./config/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - default
       - treafiktests_proxy
