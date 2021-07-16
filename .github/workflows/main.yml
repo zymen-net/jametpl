@@ -18,5 +18,5 @@ jobs:
       - name: Deploy to dokku 
         uses: dokku/github-action@v1.0.1
         with:
-          git_remote_url: dokku@64.227.120.171:market-bot
+          git_remote_url: dokku@64.227.120.171:jametpl
           ssh_private_key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
