@@ -1,0 +1,22 @@
+name: Deploy to dokku
+
+on:
+  push:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Deploy to dokku 
+        uses: dokku/github-action@v1.0.1
+        with:
+          git_remote_url: a
+          ssh_private_key: test
