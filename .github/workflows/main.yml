@@ -19,5 +19,5 @@ jobs:
         uses: idoberko2/dokku-deploy-github-action@v1
         with:
           dokku-host: 64.227.120.171
-          app-name: jametpl
+          app-name: jametpl2
           ssh-private-key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
